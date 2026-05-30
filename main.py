@@ -43,10 +43,25 @@ def main():
             
             # TODO [DANIEL]: Tangani poin dari Tahap 1: 
             # - Berhenti hanya jika pengguna mengetik perintah exit.
+            if raw_input.strip() == "exit":
+                print("\n----------------------------\nExiting ngawi-shell. crt~ <3\n----------------------------\n")
+                print(r"""   _____                 _ _                _ 
+  / ____|               | | |              | |
+ | |  __  ___   ___   __| | |__  _   _  ___| |
+ | | |_ |/ _ \ / _ \ / _` | '_ \| | | |/ _ \ |
+ | |__| | (_) | (_) | (_| | |_) | |_| |  __/_|
+  \_____|\___/ \___/ \__,_|_.__/ \__, |\___(_)
+                                  __/ |       
+                                 |___/        """)
+                print("\n")
+                break
+
             
             # TODO [DANIEL]: Tangani poin pengujian agar program aman:
             # - Pastikan program tidak langsung menutup (force close) jika pengguna 
             #   menekan tombol Enter tanpa mengetik apa pun.
+            if raw_input.strip() == "":
+                continue
             
             # --- BATAS BAGIAN DANIEL ---
 
