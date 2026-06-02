@@ -1,5 +1,6 @@
 import os
 import sys
+import shlex
 
 def parse_command(user_input):
     """
@@ -13,10 +14,23 @@ def parse_command(user_input):
     
     [JADWAL: MINGGU 2 | OLEH: FARIS & HAMIM]
     """
-    # TODO [FARIS & HAMIM]: Tulis logika pemecahan string di sini
-    
-    return []
+    # ===================== MULAI BAGIAN FARIS =====================
 
+    # TODO [FARIS 1/3]: Cek apakah user_input kosong atau hanya whitespace (DONE)
+    if user_input.strip() == "":
+        return []
+
+    # TODO [FARIS 2/3]: Pecah user_input menggunakan shlex.split() (DONE)
+    try:
+        tokens = shlex.split(user_input)
+    except ValueError:
+        print("ngawi-shell: error: unclosed quotation")
+        return []
+
+    # TODO [FARIS 3/3]: Return hasil tokenisasi (DONE)
+    return tokens
+
+    # ===================== BATAS BAGIAN FARIS =====================
 
 def main():
     """
@@ -67,12 +81,22 @@ def main():
 
             # Transisi ke Tahap 2 (Faris & Hamim)
             args = parse_command(raw_input)
+
+            # ===================== MULAI BAGIAN HAMIM =====================
+
+            # TODO [HAMIM 1/3]: Validasi hasil parse_command() (DONE)
+            # Kalau return [] jangan dieksekusi, langsung continue ke prompt berikutnya
             if not args:
                 continue
 
-            # Tahap 3 dan seterusnya akan dikerjakan pada minggu berikutnya
-            # Untuk sekarang print aja hasil dari Tahap 2 untuk ngetes
-            print(f"[DEBUG] Args yang akan dieksekusi nanti: {args}")
+            # TODO [HAMIM 2/3]: Pisahkan command utama dan argumennya (DONE)
+            command = args[0]
+            arguments = args[1:]
+
+            # TODO [HAMIM 3/3]: Print DEBUG untuk verifikasi hasil parsing sudah benar (DONE)
+            print(f"[DEBUG] Command: {command} | Args: {arguments}")
+
+            # ===================== BATAS BAGIAN HAMIM =====================
 
         except KeyboardInterrupt:
             print()
