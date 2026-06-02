@@ -2,7 +2,6 @@ import os
 import sys
 import shlex
 
-
 def parse_command(user_input):
     """
     Tahap 2: Parsing Perintah (Command Tokenization): Target: Memisahkan perintah
@@ -15,22 +14,23 @@ def parse_command(user_input):
     
     [JADWAL: MINGGU 2 | OLEH: FARIS & HAMIM]
     """
-
     # ===================== MULAI BAGIAN FARIS =====================
 
-    # TODO [FARIS 1/3]: Cek apakah user_input kosong atau hanya whitespace
-    # Gunakan .strip(), kalau hasilnya "" langsung return []
+    # TODO [FARIS 1/3]: Cek apakah user_input kosong atau hanya whitespace (DONE)
+    if user_input.strip() == "":
+        return []
 
-    # TODO [FARIS 2/3]: Pecah user_input menggunakan shlex.split()
-    # shlex lebih robust dari .split() biasa — sudah handle spasi berlebih
-    # Contoh: "cp  file1.txt  file2.txt" → ["cp", "file1.txt", "file2.txt"]
+    # TODO [FARIS 2/3]: Pecah user_input menggunakan shlex.split() (DONE)
+    try:
+        tokens = shlex.split(user_input)
+    except ValueError:
+        print("ngawi-shell: error: unclosed quotation")
+        return []
 
-    # TODO [FARIS 3/3]: Return hasil tokenisasi
+    # TODO [FARIS 3/3]: Return hasil tokenisasi (DONE)
+    return tokens
 
     # ===================== BATAS BAGIAN FARIS =====================
-
-    return []
-
 
 def main():
     """
