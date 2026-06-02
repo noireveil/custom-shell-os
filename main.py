@@ -84,15 +84,17 @@ def main():
 
             # ===================== MULAI BAGIAN HAMIM =====================
 
-            # TODO [HAMIM 1/3]: Validasi hasil parse_command()
+            # TODO [HAMIM 1/3]: Validasi hasil parse_command() (DONE)
             # Kalau return [] jangan dieksekusi, langsung continue ke prompt berikutnya
+            if not args:
+                continue
 
-            # TODO [HAMIM 2/3]: Pisahkan command utama dan argumennya
-            # command = args[0]
-            # arguments = args[1:]
+            # TODO [HAMIM 2/3]: Pisahkan command utama dan argumennya (DONE)
+            command = args[0]
+            arguments = args[1:]
 
-            # TODO [HAMIM 3/3]: Print DEBUG untuk verifikasi hasil parsing sudah benar
-            # print(f"[DEBUG] Command: {command} | Args: {arguments}")
+            # TODO [HAMIM 3/3]: Print DEBUG untuk verifikasi hasil parsing sudah benar (DONE)
+            print(f"[DEBUG] Command: {command} | Args: {arguments}")
 
             # ===================== BATAS BAGIAN HAMIM =====================
 
