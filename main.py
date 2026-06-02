@@ -1,5 +1,7 @@
 import os
 import sys
+import shlex
+
 
 def parse_command(user_input):
     """
@@ -13,8 +15,20 @@ def parse_command(user_input):
     
     [JADWAL: MINGGU 2 | OLEH: FARIS & HAMIM]
     """
-    # TODO [FARIS & HAMIM]: Tulis logika pemecahan string di sini
-    
+
+    # ===================== MULAI BAGIAN FARIS =====================
+
+    # TODO [FARIS 1/3]: Cek apakah user_input kosong atau hanya whitespace
+    # Gunakan .strip(), kalau hasilnya "" langsung return []
+
+    # TODO [FARIS 2/3]: Pecah user_input menggunakan shlex.split()
+    # shlex lebih robust dari .split() biasa — sudah handle spasi berlebih
+    # Contoh: "cp  file1.txt  file2.txt" → ["cp", "file1.txt", "file2.txt"]
+
+    # TODO [FARIS 3/3]: Return hasil tokenisasi
+
+    # ===================== BATAS BAGIAN FARIS =====================
+
     return []
 
 
@@ -56,7 +70,6 @@ def main():
                 print("\n")
                 break
 
-            
             # TODO [DANIEL]: Tangani poin pengujian agar program aman:
             # - Pastikan program tidak langsung menutup (force close) jika pengguna 
             #   menekan tombol Enter tanpa mengetik apa pun.
@@ -68,12 +81,20 @@ def main():
 
             # Transisi ke Tahap 2 (Faris & Hamim)
             args = parse_command(raw_input)
-            if not args:
-                continue
 
-            # Tahap 3 dan seterusnya akan dikerjakan pada minggu berikutnya
-            # Untuk sekarang print aja hasil dari Tahap 2 untuk ngetes
-            print(f"[DEBUG] Args yang akan dieksekusi nanti: {args}")
+            # ===================== MULAI BAGIAN HAMIM =====================
+
+            # TODO [HAMIM 1/3]: Validasi hasil parse_command()
+            # Kalau return [] jangan dieksekusi, langsung continue ke prompt berikutnya
+
+            # TODO [HAMIM 2/3]: Pisahkan command utama dan argumennya
+            # command = args[0]
+            # arguments = args[1:]
+
+            # TODO [HAMIM 3/3]: Print DEBUG untuk verifikasi hasil parsing sudah benar
+            # print(f"[DEBUG] Command: {command} | Args: {arguments}")
+
+            # ===================== BATAS BAGIAN HAMIM =====================
 
         except KeyboardInterrupt:
             print()
