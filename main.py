@@ -43,7 +43,6 @@ def main():
                 continue
             
 
-
             args = parse_command(raw_input)
 
             if not args:
@@ -51,6 +50,41 @@ def main():
 
             command = args[0]
             arguments = args[1:]
+
+            # ===================== MULAI BAGIAN YASYFI =====================
+            
+            # [YASYFI - SELESAI] Implementasi built-in command 'cd' menggunakan os.chdir()
+            if command == "cd":
+                # Jika user hanya mengetik 'cd' tanpa argumen, arahkan ke direktori Home (~)
+                if not arguments:
+                    target_dir = os.path.expanduser("~")
+                else:
+                    target_dir = arguments[0]
+                
+                try:
+                    os.chdir(target_dir)
+                except FileNotFoundError:
+                    print(f"ngawi-shell: cd: {target_dir}: No such file or directory")
+                except NotADirectoryError:
+                    print(f"ngawi-shell: cd: {target_dir}: Not a directory")
+                except PermissionError:
+                    print(f"ngawi-shell: cd: {target_dir}: Permission denied")
+                
+                # Continue agar perintah built-in tidak diteruskan ke proses eksekusi tahap 4 nanti
+                continue
+            
+            # ===================== BATAS BAGIAN YASYFI =====================
+
+
+            # ===================== MULAI BAGIAN DANIEL =====================
+            
+            # TODO [DANIEL]: Implementasi built-in command 'pwd'
+            # 1. Buat kondisi pengecekan: elif command == "pwd":
+            # 2. Gunakan fungsi os.getcwd() untuk mendapatkan direktori aktif saat ini
+            # 3. Print hasil direktori tersebut ke layar
+            # 4. Wajib panggil 'continue' di akhir agar program langsung kembali ke awal loop prompt
+            
+            # ===================== BATAS BAGIAN DANIEL =====================
 
             print(f"[DEBUG] Command: {command} | Args: {arguments}")
 
