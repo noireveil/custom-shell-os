@@ -77,16 +77,19 @@ def main():
 
 
             # ===================== MULAI BAGIAN DANIEL =====================
-            
-            # TODO [DANIEL]: Implementasi built-in command 'pwd'
-            # 1. Buat kondisi pengecekan: elif command == "pwd":
-            # 2. Gunakan fungsi os.getcwd() untuk mendapatkan direktori aktif saat ini
-            # 3. Print hasil direktori tersebut ke layar
-            # 4. Wajib panggil 'continue' di akhir agar program langsung kembali ke awal loop prompt
+
+            if command == "pwd":
+                current_directory = os.getcwd() # fungsi os.getcwd() untuk mendapatkan direktori aktif saat ini
+                print(current_directory)
+
+                # Panggil 'continue' di akhir agar program langsung kembali ke awal loop prompt
+                continue
             
             # ===================== BATAS BAGIAN DANIEL =====================
 
             print(f"[DEBUG] Command: {command} | Args: {arguments}")
+
+            # debug untuk melihat command dan argumen yang diparsing, bisa dihapus nanti setelah implementasi selesai
 
 
         except KeyboardInterrupt:
