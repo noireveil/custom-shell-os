@@ -3,7 +3,6 @@ import sys
 import shlex
 
 def parse_command(user_input):
-
     if user_input.strip() == "":
         return []
 
@@ -15,9 +14,7 @@ def parse_command(user_input):
 
     return tokens
 
-
 def main():
-
     while True:
         try:
             user = os.environ.get('USER', 'user')
@@ -37,11 +34,9 @@ def main():
                                  |___/        """)
                 print("\n")
                 break
-
             
             if raw_input.strip() == "":
                 continue
-            
 
             args = parse_command(raw_input)
 
@@ -51,11 +46,8 @@ def main():
             command = args[0]
             arguments = args[1:]
 
-            # ===================== MULAI BAGIAN YASYFI =====================
-            
-            # [YASYFI - SELESAI] Implementasi built-in command 'cd' menggunakan os.chdir()
+            # Implementasi Built-in Command: cd
             if command == "cd":
-                # Jika user hanya mengetik 'cd' tanpa argumen, arahkan ke direktori Home (~)
                 if not arguments:
                     target_dir = os.path.expanduser("~")
                 else:
@@ -69,28 +61,15 @@ def main():
                     print(f"ngawi-shell: cd: {target_dir}: Not a directory")
                 except PermissionError:
                     print(f"ngawi-shell: cd: {target_dir}: Permission denied")
-                
-                # Continue agar perintah built-in tidak diteruskan ke proses eksekusi tahap 4 nanti
                 continue
-            
-            # ===================== BATAS BAGIAN YASYFI =====================
 
-
-            # ===================== MULAI BAGIAN DANIEL =====================
-
-            if command == "pwd":
-                current_directory = os.getcwd() # fungsi os.getcwd() untuk mendapatkan direktori aktif saat ini
-                print(current_directory)
-
-                # Panggil 'continue' di akhir agar program langsung kembali ke awal loop prompt
+            # Implementasi Built-in Command: pwd
+            elif command == "pwd":
+                print(os.getcwd())
                 continue
-            
-            # ===================== BATAS BAGIAN DANIEL =====================
 
+            # Debug untuk perintah eksternal (Tahap 4)
             print(f"[DEBUG] Command: {command} | Args: {arguments}")
-
-            # debug untuk melihat command dan argumen yang diparsing, bisa dihapus nanti setelah implementasi selesai
-
 
         except KeyboardInterrupt:
             print()
