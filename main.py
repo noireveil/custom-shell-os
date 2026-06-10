@@ -3,7 +3,6 @@ import sys
 import shlex
 
 def parse_command(user_input):
-
     if user_input.strip() == "":
         return []
 
@@ -15,9 +14,7 @@ def parse_command(user_input):
 
     return tokens
 
-
 def main():
-
     while True:
         try:
             user = os.environ.get('USER', 'user')
@@ -37,12 +34,9 @@ def main():
                                  |___/        """)
                 print("\n")
                 break
-
             
             if raw_input.strip() == "":
                 continue
-            
-
 
             args = parse_command(raw_input)
 
@@ -52,8 +46,30 @@ def main():
             command = args[0]
             arguments = args[1:]
 
-            print(f"[DEBUG] Command: {command} | Args: {arguments}")
+            # Implementasi Built-in Command: cd
+            if command == "cd":
+                if not arguments:
+                    target_dir = os.path.expanduser("~")
+                else:
+                    target_dir = arguments[0]
+                
+                try:
+                    os.chdir(target_dir)
+                except FileNotFoundError:
+                    print(f"ngawi-shell: cd: {target_dir}: No such file or directory")
+                except NotADirectoryError:
+                    print(f"ngawi-shell: cd: {target_dir}: Not a directory")
+                except PermissionError:
+                    print(f"ngawi-shell: cd: {target_dir}: Permission denied")
+                continue
 
+            # Implementasi Built-in Command: pwd
+            elif command == "pwd":
+                print(os.getcwd())
+                continue
+
+            # Debug untuk perintah eksternal (Tahap 4)
+            print(f"[DEBUG] Command: {command} | Args: {arguments}")
 
         except KeyboardInterrupt:
             print()
