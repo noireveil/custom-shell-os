@@ -68,8 +68,37 @@ def main():
                 print(os.getcwd())
                 continue
 
-            # Debug untuk perintah eksternal (Tahap 4)
-            print(f"[DEBUG] Command: {command} | Args: {arguments}")
+            # ============================================================
+            # Tahap 4: Forking & Eksekusi Perintah Eksternal
+            # ============================================================
+            # Pembagian: Hamim -> CHILD process (pid == 0)
+            #            Faris -> PARENT process (pid != 0), termasuk
+            #                     try-except fork() itu sendiri
+
+            # ----- PARENT PROCESS (Faris) -----
+            # TODO (Faris): bungkus pid = os.fork() ini dengan try-except OSError
+            pid = os.fork()
+
+            if pid == 0:
+                # ===== CHILD PROCESS (Hamim) =====
+                try:
+                    os.execvp(command, args)
+                except FileNotFoundError:
+                    print(f"ngawi-shell: {command}: command not found")
+                    os._exit(127)
+                except PermissionError:
+                    print(f"ngawi-shell: {command}: Permission denied")
+                    os._exit(126)
+                except Exception as e:
+                    print(f"ngawi-shell: {command}: {e}")
+                    os._exit(1)
+
+            else:
+                # ===== PARENT PROCESS (Faris) =====
+                # TODO (Faris): os.waitpid(pid, 0) -> tunggu child selesai
+                # TODO (Faris): ambil exit status via WIFEXITED/WEXITSTATUS
+                # TODO (Faris): (opsional) simpan exit status untuk ditampilkan di prompt
+                pass
 
         except KeyboardInterrupt:
             print()
