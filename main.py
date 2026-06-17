@@ -77,7 +77,11 @@ def main():
 
             # ----- PARENT PROCESS (Faris) -----
             # TODO (Faris): bungkus pid = os.fork() ini dengan try-except OSError
-            pid = os.fork()
+            try:
+                pid = os.fork()
+            except OSError as e:
+                print(f"ngawi-shell: fork failed: {e}")
+                continue
 
             if pid == 0:
                 # ===== CHILD PROCESS (Hamim) =====
@@ -98,7 +102,12 @@ def main():
                 # TODO (Faris): os.waitpid(pid, 0) -> tunggu child selesai
                 # TODO (Faris): ambil exit status via WIFEXITED/WEXITSTATUS
                 # TODO (Faris): (opsional) simpan exit status untuk ditampilkan di prompt
-                pass
+                _, status = os.waitpid(pid, 0)
+                 
+                if os.WIFEXITED(status):
+                    exit_code = os.WEXITSTATUS(status)
+                    if exit_code != 0:
+                        print(f"ngawi-shell: {command}: exited with status {exit_code}")
 
         except KeyboardInterrupt:
             print()
