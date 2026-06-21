@@ -46,7 +46,7 @@ def main():
             command = args[0]
             arguments = args[1:]
 
-            # Implementasi Built-in Command: cd
+            # Built-in Command: cd
             if command == "cd":
                 if not arguments:
                     target_dir = os.path.expanduser("~")
@@ -63,10 +63,46 @@ def main():
                     print(f"ngawi-shell: cd: {target_dir}: Permission denied")
                 continue
 
-            # Implementasi Built-in Command: pwd
+            # Built-in Command: pwd
             elif command == "pwd":
                 print(os.getcwd())
                 continue
+
+
+            # ==========================================
+            # Stage 5: Piping & I/O Redirection
+            # ==========================================
+
+            # Piping Implementation (|)
+            if "|" in args:
+                # TODO: Implement piping using os.pipe()
+                
+                print("ngawi-shell: piping feature not yet implemented")
+                continue
+
+
+            # I/O Redirection Implementation (< and >)
+            input_file = None
+            output_file = None
+            clean_args = []
+            
+            # Parse redirection operators and target files
+            i = 0
+            while i < len(args):
+                if args[i] == "<" and i + 1 < len(args):
+                    input_file = args[i+1]
+                    i += 2
+                elif args[i] == ">" and i + 1 < len(args):
+                    output_file = args[i+1]
+                    i += 2
+                else:
+                    clean_args.append(args[i])
+                    i += 1
+
+            if not clean_args:
+                continue
+
+            command = clean_args[0]
 
             try:
                 pid = os.fork()
@@ -75,8 +111,27 @@ def main():
                 continue
 
             if pid == 0:
+                # Child Process
+                
+                # Handle Input Redirection (<)
+                if input_file:
+                    try:
+                        fd_in = os.open(input_file, os.O_RDONLY)
+                        os.dup2(fd_in, 0) # Redirect stdin (0)
+                        os.close(fd_in)
+                    except FileNotFoundError:
+                        print(f"ngawi-shell: {input_file}: No such file or directory")
+                        os._exit(1)
+
+                # Handle Output Redirection (>)
+                if output_file:
+                    fd_out = os.open(output_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o644)
+                    os.dup2(fd_out, 1) # Redirect stdout (1)
+                    os.close(fd_out)
+
+                # Execute target command
                 try:
-                    os.execvp(command, args)
+                    os.execvp(command, clean_args)
                 except FileNotFoundError:
                     print(f"ngawi-shell: {command}: command not found")
                     os._exit(127)
@@ -88,6 +143,7 @@ def main():
                     os._exit(1)
 
             else:
+                # Parent Process
                 _, status = os.waitpid(pid, 0)
                  
                 if os.WIFEXITED(status):
