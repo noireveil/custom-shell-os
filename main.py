@@ -68,15 +68,6 @@ def main():
                 print(os.getcwd())
                 continue
 
-            # ============================================================
-            # Tahap 4: Forking & Eksekusi Perintah Eksternal
-            # ============================================================
-            # Pembagian: Hamim -> CHILD process (pid == 0)
-            #            Faris -> PARENT process (pid != 0), termasuk
-            #                     try-except fork() itu sendiri
-
-            # ----- PARENT PROCESS (Faris) -----
-            # TODO (Faris): bungkus pid = os.fork() ini dengan try-except OSError
             try:
                 pid = os.fork()
             except OSError as e:
@@ -84,7 +75,6 @@ def main():
                 continue
 
             if pid == 0:
-                # ===== CHILD PROCESS (Hamim) =====
                 try:
                     os.execvp(command, args)
                 except FileNotFoundError:
@@ -98,10 +88,6 @@ def main():
                     os._exit(1)
 
             else:
-                # ===== PARENT PROCESS (Faris) =====
-                # TODO (Faris): os.waitpid(pid, 0) -> tunggu child selesai
-                # TODO (Faris): ambil exit status via WIFEXITED/WEXITSTATUS
-                # TODO (Faris): (opsional) simpan exit status untuk ditampilkan di prompt
                 _, status = os.waitpid(pid, 0)
                  
                 if os.WIFEXITED(status):
