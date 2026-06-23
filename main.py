@@ -75,9 +75,46 @@ def main():
 
             # Piping Implementation (|)
             if "|" in args:
-                # TODO: Implement piping using os.pipe()
-                
-                print("ngawi-shell: piping feature not yet implemented")
+                pipe_index = args.index("|")
+                left_command = args[:pipe_index]
+                right_command = args[pipe_index + 1:]
+
+                if not left_command or not right_command:
+                    print("ngawi-shell: error: invalid pipe command")
+                    continue
+
+                try:
+                    # Create a pipe
+                    read_fd, write_fd = os.pipe()
+                    
+                    # Fork the first child for the left command
+                    pid1 = os.fork()
+                    if pid1 == 0:
+                        os.dup2(write_fd, 1)  # Redirect stdout to pipe
+                        os.close(read_fd)
+                        os.close(write_fd)
+                        os.execvp(left_command[0], left_command)
+                        os._exit(1)
+
+                    # Fork the second child for the right command
+                    pid2 = os.fork()
+                    if pid2 == 0:
+                        os.dup2(read_fd, 0)  # Redirect stdin from pipe
+                        os.close(write_fd)
+                        os.close(read_fd)
+                        os.execvp(right_command[0], right_command)
+                        os._exit(1)
+
+                    # Parent process closes both ends of the pipe
+                    os.close(read_fd)
+                    os.close(write_fd)
+
+                    # Wait for both children to finish
+                    _, status1 = os.waitpid(pid1, 0)
+                    _, status2 = os.waitpid(pid2, 0)
+
+                except OSError as e:
+                    print(f"ngawi-shell: pipe failed: {e}")
                 continue
 
 
