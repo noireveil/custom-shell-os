@@ -93,7 +93,16 @@ def main():
                         os.dup2(write_fd, 1)  # Redirect stdout to pipe
                         os.close(read_fd)
                         os.close(write_fd)
-                        os.execvp(left_command[0], left_command)
+                        try:
+                            os.execvp(left_command[0], left_command)
+                        except FileNotFoundError:
+                            print(f"ngawi-shell: {left_command[0]}: command not found")
+                            os._exit(127)
+                        except PermissionError:
+                            print(f"ngawi-shell: {left_command[0]}: permission denied")
+                            os._exit(126)
+                        except Exception as e:
+                            print(f"ngawi-shell: {left_command[0]}: {e}")
                         os._exit(1)
 
                     # Fork the second child for the right command
@@ -102,7 +111,16 @@ def main():
                         os.dup2(read_fd, 0)  # Redirect stdin from pipe
                         os.close(write_fd)
                         os.close(read_fd)
-                        os.execvp(right_command[0], right_command)
+                        try:
+                            os.execvp(right_command[0], right_command)
+                        except FileNotFoundError:
+                            print(f"ngawi-shell: {right_command[0]}: command not found")
+                            os._exit(127)
+                        except PermissionError:
+                            print(f"ngawi-shell: {right_command[0]}: permission denied")
+                            os._exit(126)
+                        except Exception as e:
+                            print(f"ngawi-shell: {right_command[0]}: {e}")
                         os._exit(1)
 
                     # Parent process closes both ends of the pipe
