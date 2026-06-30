@@ -140,21 +140,33 @@ def main():
             input_file = None
             output_file = None
             clean_args = []
+            syntax_error = False
             
             # Parse redirection operators and target files
             i = 0
             while i < len(args):
-                if args[i] == "<" and i + 1 < len(args):
-                    input_file = args[i+1]
-                    i += 2
-                elif args[i] == ">" and i + 1 < len(args):
-                    output_file = args[i+1]
-                    i += 2
+                if args[i] == "<":
+                    if i + 1 < len(args):
+                        input_file = args[i+1]
+                        i += 2
+                    else:
+                        print("ngawi-shell: syntax error near unexpected token 'newline'")
+                        syntax_error = True
+                        break
+                elif args[i] == ">":
+                    if i + 1 < len(args):
+                        output_file = args[i+1]
+                        i += 2
+                    else:
+                        print("ngawi-shell: syntax error near unexpected token 'newline'")
+                        syntax_error = True
+                        break
                 else:
                     clean_args.append(args[i])
                     i += 1
 
-            if not clean_args:
+            # Cegat eksekusi jika format redirection salah
+            if syntax_error or not clean_args:
                 continue
 
             command = clean_args[0]
