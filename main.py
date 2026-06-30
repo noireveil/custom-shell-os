@@ -80,7 +80,7 @@ def main():
                 right_command = args[pipe_index + 1:]
 
                 if not left_command or not right_command:
-                    print("ngawi-shell: error: invalid pipe command")
+                    print("ngawi-shell: syntax error near unexpected token '|'")
                     continue
 
                 try:
